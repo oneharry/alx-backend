@@ -43,7 +43,6 @@ class Server:
             }
         return self.__indexed_dataset
 
-
     def get_hyper_index(index: Optional[int] = None, page_size:
                         int = 10) -> Dict[str, any]:
         """ implemententation of get hyper"""
@@ -52,7 +51,6 @@ class Server:
         else:
             assert isinstance(index, int) and index >= 0
         assert isinstance(page_size, int) and page_size > 0
-        
         my_list = []
         data = self.indexed_dataset()
         index = 0 if index is None else index
@@ -65,7 +63,7 @@ class Server:
         data = [dataset[y] for y in my_list[:-1]]
 
         total_rows = len(data)
-        next_index = my_list[-1] if len(my_list) - page_size == 1 else None 
+        next_index = my_list[-1] if len(my_list) - page_size == 1 else None
 
         return {
             'index': index,
