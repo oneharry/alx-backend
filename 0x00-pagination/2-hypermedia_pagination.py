@@ -51,16 +51,24 @@ class Server:
         """ implements get_hyper"""
         assert type(page) == int and type(page_size) == int
         assert page > 0 and page_size > 0
-        data_page = get_page(page, page_size)
+        data_page = self.get_page(page, page_size)
+        total_rows = len(self.dataset())
         total_pages = math.ceil(len(data_page) / page_size)
-        next_page = page + 1 if page < total_pages else None
+        next_page = page + 1
         prev_page = page - 1 if page > 1 else None
+        end = index_range(page, page_size)[1]
 
+        if end >= total_rows:
+            next_page = None
+        total_pages = total_rows / page_size
+
+        if total_pages % 1 != 0:
+            total_pages += 1
         return {
             'page_size': len(data_page),
             'page': page,
             'data': data_page,
             'next_page': next_page,
             'prev_page': prev_page,
-            'total_pages': total_pages
+            'total_pages': int(total_pages)
         }
