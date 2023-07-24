@@ -43,7 +43,7 @@ class Server:
         data = self.indexed_dataset()
         index = 0 if index is None else index
         keys = sorted(dataset.keys())
-        assert index >= 0 and index <= keys[1]
+        assert index >= 0 and index <= keys[-1]
         for x in keys:
             if x >= index and len(my_list) <= page_size:
                 my_list.append(x)
