@@ -1,15 +1,8 @@
 #!/usr/bin/env python3
 """Script for pagination"""
-from typing import Tuple, List
+from typing import List
 import csv
 import math
-
-
-def index_range(page: int, page_size: int) -> Tuple[int, int]:
-    """ implementation of pagination"""
-    start = (page - 1) * page_size
-    end = start + page_size
-    return start, end
 
 
 class Server:
@@ -20,6 +13,7 @@ class Server:
     def __init__(self):
         """ Initialization method """
         self.__dataset = None
+        self.__indexed_dataset = None
 
     def dataset(self) -> List[List]:
         """Cached dataset
