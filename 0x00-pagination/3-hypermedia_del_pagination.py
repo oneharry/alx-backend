@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Script for pagination"""
-from typing import List
+from typing import List, Dict
 import csv
 import math
 
@@ -37,8 +37,7 @@ class Server:
             }
         return self.__indexed_dataset
 
-    def get_hyper_index(index: Optional[int] = None, page_size:
-                        int = 10) -> Dict[str, any]:
+    def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
         """ implemententation of get hyper"""
         my_list = []
         data = self.indexed_dataset()
