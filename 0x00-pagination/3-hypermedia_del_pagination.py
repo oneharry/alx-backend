@@ -32,39 +32,17 @@ class Server:
 
         return self.__dataset
 
-    def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
-        """Implement get page"""
-        assert type(page) == int and type(page_size) == int
-        assert page > 0 and page_size > 0
+    def indexed_dataset(self) -> Dict[int, List]:
+        """ Dataset indexed by sorting position, starting at 0
+        """
+        if self.__indexed_dataset is None:
+            dataset = self.dataset()
+            truncated_dataset = dataset[:1000]
+            self.__indexed_dataset = {
+               i: dataset[i] for i in range(len(dataset))
+            }
+        return self.__indexed_dataset
 
-        with open(self.DATA_FILE, 'r') as csvfile:
-            reader = csv.reader(csvfile)
-            data = list(reader)
-        start, end = index_range(page, page_size)
-
-        if start >= len(data):
-            return []
-
-        return data[start:end]
-
-    def get_hyper(self, page: int = 1, page_size: int = 10) -> Dict[str, any]:
-        """ implements get_hyper"""
-        assert type(page) == int and type(page_size) == int
-        assert page > 0 and page_size > 0
-        data_page = self.get_page(page, page_size)
-        total_rows = len(self.dataset())
-        total_pages = math.ceil(len(data_page) / page_size)
-        next_page = page + 1 if page < total_pages else None
-        prev_page = page - 1 if page > 1 else None
-
-        return {
-            'page_size': len(data_page),
-            'page': page,
-            'data': data_page,
-            'next_page': next_page,
-            'prev_page': prev_page,
-            'total_pages': int(total_pages)
-        }
 
     def get_hyper_index(index: Optional[int] = None, page_size:
                         int = 10) -> Dict[str, any]:
@@ -74,20 +52,24 @@ class Server:
         else:
             assert isinstance(index, int) and index >= 0
         assert isinstance(page_size, int) and page_size > 0
+        
+        my_list = []
+        data = self.indexed_dataset()
+        index = 0 if index is None else index
+        keys = sorted(dataset.keys())
+        assert index >= 0 and index <= keys[:1]
+        for x in keys:
+            if i >= index and len(my_list) <= page_size:
+                my_list.append(x)
 
-        data = self.dataset()
+        data = [dataset[y] for y in my_list[:-1]]
+
         total_rows = len(data)
-        next_index = index + page_size
-
-        if next_index >= total_rows:
-            next_index = None
-
-        data_page = data[index:next_index]
+        next_index = my_list[-1] if len(my_list) - page_size == 1 else None 
 
         return {
             'index': index,
-            'next_index': next_index,
+            'data': data,
             'page_size': len(data_page),
-            'data': data_page
+            'next_index': next_index
         }
-
