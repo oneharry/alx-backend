@@ -32,7 +32,7 @@ class Server:
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
-        """ Implement get page"""
+        """Implement get page"""
         assert page > 0 and page_size > 0
 
         with open(self.DATA_FILE, 'r') as csvfile:
@@ -44,3 +44,23 @@ class Server:
             return []
 
         return data[start:end]
+
+    def get_hyper(self, page: int = 1, page_size: int = 10) -> Dict[str, any]:
+        """ implements get_hyper"""
+
+        assert page > 0 and page_size > 0
+        data_page = get_page(page, page_size)
+        total_pages = math.ceil(len(data_page) / page_size)
+        next_page = page + 1 if page < total_pages else None
+        prev_page = page - 1 if page > 1 else None
+
+
+        return {
+            'page_size': len(data_page),
+            'page': page,
+            'data': data_page,
+            'next_page': next_page,
+            'prev_page': prev_page,
+            'total_pages': total_pages
+        }
+
