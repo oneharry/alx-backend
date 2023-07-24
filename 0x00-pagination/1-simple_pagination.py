@@ -34,6 +34,7 @@ class Server:
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
         """ Implement get page"""
+        assert type(page) == int and type(page_size) == int
         assert page > 0 and page_size > 0
 
         with open(self.DATA_FILE, 'r') as csvfile:
