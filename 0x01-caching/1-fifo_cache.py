@@ -17,7 +17,7 @@ class FIFOCache(BaseCaching):
         if key is None or item is None:
             return
         num_cachedata = len(self.cache_data)
-        if num_cachedata > BaseCaching.MAX_ITEMS:
+        if num_cachedata >= BaseCaching.MAX_ITEMS:
             rm_key = self.queue.popleft()
             self.cache_data.pop(rm_key)
             print("DISCARD: {}".format(rm_key))

@@ -15,12 +15,11 @@ class LRUCache(BaseCaching):
         """ put item value into key key"""
         if key is None or item is None:
             return
-        num_cachedata = len(self.cache_data)
         if key in self.cache_data:
             self.cache_data.pop(key)
             self.queue.remove(key)
         else:
-            if num_cachedata >= BaseCaching.MAX_ITEMS:
+            if len(self.cache_data) == BaseCaching.MAX_ITEMS:
                 rm_key = self.queue.pop(0)
                 self.cache_data.pop(rm_key)
                 print("DISCARD: {}".format(rm_key))
