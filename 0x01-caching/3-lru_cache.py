@@ -21,7 +21,7 @@ class LRUCache(BaseCaching):
             self.queue.remove(key)
         else:
             if num_cachedata > BaseCaching.MAX_ITEMS:
-                rm_key = self.queue.pop(0)
+                rm_key = self.queue.pop(1)
                 del self.cache_data[rm_key]
                 print("DISCARD: {}".format(rm_key))
 
