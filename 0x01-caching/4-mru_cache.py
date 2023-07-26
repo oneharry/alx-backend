@@ -3,7 +3,7 @@
 BaseCaching = __import__('base_caching').BaseCaching
 
 
-class  MRUCache(BaseCaching):
+class MRUCache(BaseCaching):
     """ MRUCache implementation """
 
     def __init__(self):
